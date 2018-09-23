@@ -2,6 +2,7 @@
 
 # third-party imports
 from flask import Flask
+from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
 
 # local imports
@@ -26,7 +27,7 @@ def create_app(config_name):
         import Adafruit_DHT
         humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, 2)
         if humidity is not None and temperature is not None:
-            return render_template("temp_now.html",temp=temperature,hum=humidity)
+            return render_template("temp_now.html",temp=temperature,hum=humidity).encode("utf-8")
         else:
             return render_template("problems_sorry.html")
 

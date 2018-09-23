@@ -1,25 +1,24 @@
 <html>
     <head>
     	<meta charset="utf-8">
+	<meta http-equiv="refresh" content="10">
     	<meta name="description" content="Temp BiccoNess">
-    	<meta name="author" content="V√ctor Santoja">
+    	<meta name="author" content="Victor Santoja">
     	<title>Temperatura actual en casa de BiccoNess</title>
-
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-    	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-    	<link rel="stylesheet" href="/static/css/normalize.css">
-    	<link rel="stylesheet" href="/static/css/skeleton.css">
-
-    	<link rel="icon" type="image/png" href="/static/images/favicon.png">
+	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/static/css/normalize.css">
+	<link rel="stylesheet" href="/static/css/skeleton.css">
+	<!-- <link rel="icon" type="image/png" href="/static/images/favicon.png"> -->
     </head>
     <body>
 	<div class="container">
 	    <div class="row">
 	        <div class="two-third column" style="margin-top: 5%">
 		    <h2>Temperatura en tiempo real</h2>
-		    <h1>Temperatura: {{"{0:0.1f}".format(temp) }}¬C</h1>
+		    <h1>Temperatura: {{"{0:0.1f}".format(temp) }} C</h1>
 	            <h1>Humedad: {{"{0:0.1f}".format(hum)}}%</h1>  
-		    <p>Esta p√gina se actualizar√° cada minuto</p>
+		    <p>Esta pagina se actualizara cada minuto</p>
 	        </div>   
 	    </div>
 	    <div class="row">
@@ -27,7 +26,7 @@
 		     <form id="range_select" action = "/lab_env_db" method="GET">  
 		         <input type="hidden" class="timezone" name="timezone" />      
 	                 <div class="one column">
-		             <a href="/lab_env_db" style="position:relative;top:15px">Hist√≥rico</a>
+		             <a href="/lab_env_db" style="position:relative;top:15px">Historico</a>
 	                </div>
 		     </form>
 		</div>
