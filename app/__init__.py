@@ -34,10 +34,11 @@ def create_app(config_name):
 
     @app.route("/temp_historic", methods=['GET'])
     def temp_historic():
-        from_date_str     = request.args.get('from',time.strftime("%Y-%m-%d 00:00")) #Get the from date value from the URL
-        to_date_str       = request.args.get('to',time.strftime("%Y-%m-%d %H:%M"))   #Get the to date value from the URL
-        range_h_form      = request.args.get('range_h','');  #This will return a string, if field range_h exists in the request
-        range_h_int       = "nan"  #initialise this variable with not a number
+        return render_template("temp_historic.html")
+        # from_date_str     = request.args.get('from',time.strftime("%Y-%m-%d 00:00")) #Get the from date value from the URL
+        # to_date_str       = request.args.get('to',time.strftime("%Y-%m-%d %H:%M"))   #Get the to date value from the URL
+        # range_h_form      = request.args.get('range_h','');  #This will return a string, if field range_h exists in the request
+        #  range_h_int       = "nan"  #initialise this variable with not a number
         
         
         # temperatures, humidities, timezone, from_date_str, to_date_str = 
