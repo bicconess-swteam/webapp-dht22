@@ -11,7 +11,7 @@ class Information(db.Model):
     __tablename__ = 'InformationTempHum'
    
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Datetime)
+    date = db.Column(db.Date)
     temperature = db.Column(db.Integer)
-    
+    humidity = db.Column(db.Integer)    
 

@@ -1,5 +1,7 @@
 # app/__init__.py
 
+import time, datetime
+
 # third-party imports
 from flask import Flask
 from flask import request
@@ -8,10 +10,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 # local imports
 from config import app_config
-# from models import Information
 
 # db variable initialization
 db = SQLAlchemy()
+
+#local imports (I need to import there, here, after I initialize the db variable
+from models import Information
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
@@ -37,30 +41,16 @@ def create_app(config_name):
     def temp_historic():
         if request.method == 'GET':
             return render_template("temp_historic.html")
-            
+
         from_date_str     = request.form.get('from',time.strftime("%Y-%m-%d 00:00")) #Get the from date value from the URL
         to_date_str       = request.form.get('to',time.strftime("%Y-%m-%d %H:%M"))   #Get the to date value from the URL
-        range_h_form      = request.form.get('range_h','');  #This will return a string, if field range_h exists in the request
-        range_h_int       = "nan"  #initialise this variable with not a number
-                
-        temperatures = []
-        humidities = []
         
-        time_adjusted_temperatures = []
-        time_adjusted_humidities   = []
-        for record in temperatures:
-            local_timedate = arrow.get(record[0], "YYYY-MM-DD HH:mm").to(timezone)
-            time_adjusted_temperatures.append([local_timedate.format('YYYY-MM-DD HH:mm'), round(record[2],2)])
+        app.logger.debug("From Date -> %s", from_date_str)
+        app.logger.debug("To Date -> %s", to_date_str)
 
-        for record in humidities:
-            local_timedate = arrow.get(record[0], "YYYY-MM-DD HH:mm").to(timezone)
-            time_adjusted_humidities.append([local_timedate.format('YYYY-MM-DD HH:mm'), round(record[2],2)])
-
-        print "rendering temp_historic.html with: %s, %s, %s" % (timezone, from_date_str, to_date_str)
-
-        return render_template("temp_historic.html", timezone        = timezone,
-                                                     temp            = time_adjusted_temperatures,
-                                                     hum             = time_adjusted_humidities, 
+        info_temp_hum = Information.query.filter(Information.date.between(from_date_str,to_date_str)).all() 
+        app.logger.debug("Info -> %s", info_temp_hum)
+        return render_template("temp_historic.html", info            = info_temp_hum,
                                                      from_date       = from_date_str, 
                                                      to_date         = to_date_str)
     
