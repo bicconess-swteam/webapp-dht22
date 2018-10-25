@@ -53,5 +53,23 @@ def create_app(config_name):
         return render_template("temp_historic.html", info            = info_temp_hum,
                                                      from_date       = from_date_str, 
                                                      to_date         = to_date_str)
-    
+
+    @app.route("/temp_graphic", methods=["GET", "POST"])
+    def temp_graphics():
+        if request.method == "GET":
+            return render_template("temp_graphics.html")
+
+        from_date_str = request.form.get('from',time.strftime("%Y-%m-%d 00:00"))
+        to_date_str   = request.form.get('to',time.strftime("%Y-%m-%d %H:%M"))  
+        temperatures = db.session.query(Information.temperature).filter(Information.date.between(from_date_str,to_date_str)).all()
+        humidities = db.session.query(Information.humidity).filter(Information.date.between(from_date_str,to_date_str)).all()
+        date = db.session.query(Information.date).filter(Information.date.between(from_date_str,to_date_str)).all()
+        graph = pygal.Line()
+        graph.title = 'Graphics of Temperatures and Humidities'
+        graph.x_labels = date
+        graph.add("Temperature", temperatures)
+        graph.add("Humidity", humidities)
+        graph_data = graph.render_data_uri()
+        return render_template("temp_graphics.html", graph_data = graph_data)
+
     return app
