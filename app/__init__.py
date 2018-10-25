@@ -56,6 +56,7 @@ def create_app(config_name):
 
     @app.route("/temp_graphic", methods=["GET", "POST"])
     def temp_graphics():
+        import pygal
         if request.method == "GET":
             return render_template("temp_graphics.html")
 
@@ -69,7 +70,8 @@ def create_app(config_name):
         graph.x_labels = date
         graph.add("Temperature", temperatures)
         graph.add("Humidity", humidities)
-        graph_data = graph.render_data_uri()
+        graph.render_to_file('static/images/graph_temp_humidity.svg')
+        graph_data = 'static/images/bar_chart.svg?cache=' + str(time.time())
         return render_template("temp_graphics.html", graph_data = graph_data)
 
     return app
