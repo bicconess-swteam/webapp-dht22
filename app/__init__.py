@@ -53,5 +53,43 @@ def create_app(config_name):
         return render_template("temp_historic.html", info            = info_temp_hum,
                                                      from_date       = from_date_str, 
                                                      to_date         = to_date_str)
-    
+
+    @app.route("/temp_graphic", methods=["GET", "POST"])
+    def temp_graphics():
+        import pygal
+        if request.method == "GET":
+            graph = pygal.Line()
+            graph.add('line', []) 
+            graph_data = graph.render_data_uri()
+            return render_template("temp_graphics.html", graph_data = graph_data)
+
+        from_date_str = request.form.get('from',time.strftime("%Y-%m-%d 00:00"))
+        to_date_str   = request.form.get('to',time.strftime("%Y-%m-%d %H:%M"))  
+        temperatures = db.session.query(Information.temperature).filter(Information.date.between(from_date_str,to_date_str)).all()
+        humidities = db.session.query(Information.humidity).filter(Information.date.between(from_date_str,to_date_str)).all()
+        dates = db.session.query(Information.date).filter(Information.date.between(from_date_str,to_date_str)).all()        
+        dates_str = []
+        temperatures_str = []
+        humidities_str = []
+        for date in dates:
+            dates_str.append(date[0].strftime('%Y-%m-%d %H:%M:%S'))
+        
+        for temp in temperatures:
+            temperatures_str.append(float(temp[0]))
+
+        for hum in humidities:
+            humidities_str.append(float(hum[0]))
+
+        app.logger.debug("Temperatures -> %s", temperatures_str)
+        app.logger.debug("Humidities -> %s", humidities_str)
+        app.logger.debug("Dates -> %s", dates_str)       
+   
+        graph = pygal.Line()
+        graph.title = 'Graphics of Temperatures and Humidities'
+        graph.x_labels = dates_str
+        graph.add("Temperature", temperatures_str)
+        graph.add("Humidity", humidities_str)
+        graph_data = graph.render_data_uri() 
+        return render_template("temp_graphics.html", graph_data = graph_data)
+
     return app
