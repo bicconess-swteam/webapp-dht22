@@ -37,6 +37,11 @@ def create_app(config_name):
         else:
             return render_template("problems_sorry.html")
 
+    @app.route("/last_temp")
+    def last_temp():
+        information = Information.query.order_by(Information.id.desc()).first()
+        return render_template("temp_now.html",temp=information.temperature,hum=information.humidity)
+
     @app.route("/temp_historic", methods=['GET', 'POST'])
     def temp_historic():
         if request.method == 'GET':
