@@ -17,13 +17,13 @@
           <form id="datetime_range" action="/temp_historic" method="POST"> 
             <!-- <div class="row">          -->
               <div class="three columns">
-                <label for="from">From date</label>
+                <label for="from">Desde</label>
                 <input class="u-full-width" id="datetimepicker1" type="date" value="{{from_date}}" name="from">
               </div>
             <!-- </div> -->
             <!-- <div class="row"> -->
               <div class="three columns">
-                <label for="to">To date</label>           
+                <label for="to">Hasta</label>           
                 <input class="u-full-width" id="datetimepicker2" type="date" value="{{to_date}}" name="to">
               </div>
             <!-- </div>          -->
@@ -36,17 +36,17 @@
       </div>
     <div class="row">
         <div class="one column">
-            <a href="/temp_now" style="position:relative;top:15px">Current</a>
+            <a href="/last_temp" style="position:relative;top:15px">Última temperatura obtenida</a>
         </div>
     </div>
     <div class="row">
          <div class="one-third column" style="margin-top: 5%">
-            <strong>Showing all records</strong>
-            <h2>Temperatures & Humidities</h2>
+            <strong>Estas son todos los resultados</strong>
+            <h2>Temperaturas & Humedad</h2>
             <table class="u-full-width">
                 <thead>
                     <tr>
-                        <th>Date</th>
+                        <th>Fecha</th>
                         <th>                              &deg;C</th>
                         <th>                                   %</th>
                     </tr>
