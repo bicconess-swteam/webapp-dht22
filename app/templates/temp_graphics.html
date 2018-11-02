@@ -2,9 +2,9 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <title> Grafica de temperaturas</title>
+        <title> Gráfica de temperaturas y humedades</title>
         <meta name="description" content="Temperatura historica">
-        <meta name="author" content="Victor Santoja">
+        <meta name="author" content="Víctor Santoja">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="/static/css/normalize.css">
@@ -17,13 +17,13 @@
                 <form id="datetime_range" action="/temp_graphic" method="POST">
                     <!-- <div class="row">          -->
                     <div class="three columns">
-                        <label for="from">From date</label>
+                        <label for="from">Desde</label>
                         <input class="u-full-width" id="datetimepicker1" type="date" value="{{from_date}}" name="from">
                     </div>
                     <!-- </div> -->
                     <!-- <div class="row"> -->
                     <div class="three columns">
-                        <label for="to">To date</label>
+                        <label for="to">Hasta</label>
                         <input class="u-full-width" id="datetimepicker2" type="date" value="{{to_date}}" name="to">
                     </div>
                     <!-- </div>          -->
@@ -35,10 +35,9 @@
                 </form>
             </div>
             <div class="row">
-                <div class="one column">
-                    <a href="/temp_now" style="position:relative;top:15px">Current</a>
-                </div>
+                <a href="/last_temp" style="position:relative;top:15px">Última temperatura obtenida</a> 
             </div>
+            </br>
             <div class="row">
                 <embed type="image/svg+xml" src={{graph_data}} style='max-width:1000px'/>
             </div>
