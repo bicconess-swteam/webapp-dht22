@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <title> Gráfica de temperaturas</title>
+        <title> Gráfica de temperaturas y humedades</title>
         <meta name="description" content="Temperatura historica">
         <meta name="author" content="Víctor Santoja">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,10 +35,9 @@
                 </form>
             </div>
             <div class="row">
-                <div class="one column">
-                    <a href="/last_temp" style="position:relative;top:15px">Última temperatura obtenida</a>
-                </div>
+                <a href="/last_temp" style="position:relative;top:15px">Última temperatura obtenida</a> 
             </div>
+            </br>
             <div class="row">
                 <embed type="image/svg+xml" src={{graph_data}} style='max-width:1000px'/>
             </div>
