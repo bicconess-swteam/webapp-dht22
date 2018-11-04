@@ -42,7 +42,7 @@ def create_app(config_name):
     def last_temp():
         import pygal
         information = Information.query.order_by(Information.id.desc()).first()
-        gauge = pygal.SolidGauge(half_pie=True, inner_radius=0.40,style=pygal.style.styles['default'](value_font_size=10))
+        gauge = pygal.SolidGauge(half_pie=True, inner_radius=0.40,style=pygal.style.styles['default'](value_font_size=10), show_legend=False)
         percent_formatter = lambda x: '{:.10g}%'.format(x)
         celsius_formatter = lambda x: '{:.10g}{simbol}C'.format(x, simbol="")
         gauge.add('Temperatura', [{'value': information.temperature, 'max_value': 50}], formatter=celsius_formatter)
