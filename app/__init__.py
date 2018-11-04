@@ -1,4 +1,5 @@
 # app/__init__.py
+# coding: utf-8
 
 import time, datetime
 
@@ -39,8 +40,15 @@ def create_app(config_name):
 
     @app.route("/last_temp")
     def last_temp():
+        import pygal
         information = Information.query.order_by(Information.id.desc()).first()
-        return render_template("temp_now.html",temp=information.temperature,hum=information.humidity)
+        gauge = pygal.SolidGauge(half_pie=True, inner_radius=0.40,style=pygal.style.styles['default'](value_font_size=10))
+        percent_formatter = lambda x: '{:.10g}%'.format(x)
+        celsius_formatter = lambda x: '{:.10g}{simbol}C'.format(x, simbol="")
+        gauge.add('Temperatura', [{'value': information.temperature, 'max_value': 50}], formatter=celsius_formatter)
+        gauge.add('Humedad', [{'value': information.humidity, 'max_value': 100}], formatter=percent_formatter)
+        gauge_data = gauge.render_data_uri()
+        return render_template("temp_now.html",temp=information.temperature,hum=information.humidity,gauge_data=gauge_data)
 
     @app.route("/temp_historic", methods=['GET', 'POST'])
     def temp_historic():
@@ -88,12 +96,21 @@ def create_app(config_name):
         app.logger.debug("Temperatures -> %s", temperatures_str)
         app.logger.debug("Humidities -> %s", humidities_str)
         app.logger.debug("Dates -> %s", dates_str)       
-   
-        graph = pygal.Line()
+        app.logger.debug("Len Dates -> %s", len(dates_str))
+
+        graph = pygal.Line(x_label_rotation=20, show_minor_x_labels=True)
         graph.title = 'Graphics of Temperatures and Humidities'
         graph.x_labels = dates_str
-        graph.add("Temperature", temperatures_str)
-        graph.add("Humidity", humidities_str)
+        dates_str_major = []
+        count = 0
+        while count < len(dates_str):
+            app.logger.debug("Dates_str -> %s", count)
+            dates_str_major.append(dates_str[count])
+            count += len(dates_str)/10
+
+        graph.x_labels_major = [dates_str_major]
+        graph.add("Temperature", temperatures_str, dots_size=0.09)
+        graph.add("Humidity", humidities_str, dots_size=0.09)
         graph_data = graph.render_data_uri() 
         return render_template("temp_graphics.html", graph_data = graph_data)
 

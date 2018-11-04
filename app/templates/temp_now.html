@@ -12,7 +12,7 @@
 	<!-- <link rel="icon" type="image/png" href="/static/images/favicon.png"> -->
     </head>
     <body>
-	<div class="container">
+	<div class="container" style="text-align: center;">
 	    <div class="row">
 	        <div class="two-third column" style="margin-top: 5%">
 		    <h2>Temperatura en tiempo real</h2>
@@ -26,6 +26,10 @@
 	    </div>
         <div class="row">
             <a href="/temp_graphic" style="position:relative;top:15px">Gráficos históricos</a> 
+        </div>
+        </br>
+        <div class="row">
+            <embed type="image/svg+xml" src={{gauge_data}} style='max-width:1000px'/>
         </div>
 	</div>
     </body>
