@@ -98,7 +98,7 @@ def create_app(config_name):
         app.logger.debug("Dates -> %s", dates_str)       
         app.logger.debug("Len Dates -> %s", len(dates_str))
 
-        graph = pygal.Line(x_label_rotation=20, show_minor_x_labels=True)
+        graph = pygal.Line(x_label_rotation=20, x_labels_major_every=len(dates_str)/10, show_minor_x_labels=False)
         graph.title = 'Graphics of Temperatures and Humidities'
         graph.x_labels = dates_str
         dates_str_major = []
