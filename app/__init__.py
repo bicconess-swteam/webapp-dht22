@@ -41,10 +41,14 @@ def create_app(config_name):
     @app.route("/last_temp")
     def last_temp():
         import pygal
+        import sys
+        reload(sys)
+        sys.setdefaultencoding("utf-8")
         information = Information.query.order_by(Information.id.desc()).first()
         gauge = pygal.SolidGauge(half_pie=True, inner_radius=0.40,style=pygal.style.styles['default'](value_font_size=10), show_legend=False)
+        symbol_degree = ("º".encode('utf-8'))
         percent_formatter = lambda x: '{:.10g}%'.format(x)
-        celsius_formatter = lambda x: '{:.10g}{simbol}C'.format(x, simbol="")
+        celsius_formatter = lambda x: '{:.10g}{simbol}C'.format(x, simbol=symbol_degree)
         gauge.add('Temperatura', [{'value': information.temperature, 'max_value': 50}], formatter=celsius_formatter)
         gauge.add('Humedad', [{'value': information.humidity, 'max_value': 100}], formatter=percent_formatter)
         gauge_data = gauge.render_data_uri()
@@ -77,22 +81,19 @@ def create_app(config_name):
             return render_template("temp_graphics.html", graph_data = graph_data)
 
         from_date_str = request.form.get('from',time.strftime("%Y-%m-%d 00:00"))
-        to_date_str   = request.form.get('to',time.strftime("%Y-%m-%d %H:%M"))  
-        temperatures = db.session.query(Information.temperature).filter(Information.date.between(from_date_str,to_date_str)).all()
-        humidities = db.session.query(Information.humidity).filter(Information.date.between(from_date_str,to_date_str)).all()
-        dates = db.session.query(Information.date).filter(Information.date.between(from_date_str,to_date_str)).all()        
+        to_date_str   = request.form.get('to',time.strftime("%Y-%m-%d 23:59"))  
+        informations = db.session.query(Information).filter(Information.date >= from_date_str, Information.date <= to_date_str).all()
         dates_str = []
         temperatures_str = []
         humidities_str = []
-        for date in dates:
-            dates_str.append(date[0].strftime('%Y-%m-%d %H:%M:%S'))
-        
-        for temp in temperatures:
-            temperatures_str.append(float(temp[0]))
 
-        for hum in humidities:
-            humidities_str.append(float(hum[0]))
+        app.logger.debug("Informations -> %s", informations)
 
+        for info in informations:
+            dates_str.append(info.date.strftime('%Y-%m-%d %H:%M:%S'))
+            temperatures_str.append(float(info.temperature))
+            humidities_str.append(float(info.humidity))
+       
         app.logger.debug("Temperatures -> %s", temperatures_str)
         app.logger.debug("Humidities -> %s", humidities_str)
         app.logger.debug("Dates -> %s", dates_str)       
@@ -112,6 +113,6 @@ def create_app(config_name):
         graph.add("Temperature", temperatures_str, dots_size=0.09)
         graph.add("Humidity", humidities_str, dots_size=0.09)
         graph_data = graph.render_data_uri() 
-        return render_template("temp_graphics.html", graph_data = graph_data)
+        return render_template("temp_graphics.html", graph_data = graph_data, from_date=from_date_str, to_date=to_date_str)
 
     return app
