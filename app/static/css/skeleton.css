@@ -347,6 +347,9 @@ form {
 
 
 /* Utilities */
+.u-middle-width{
+  width: 50%;
+  box-sizing: border-box;}
 .u-full-width {
   width: 100%;
   box-sizing: border-box; }

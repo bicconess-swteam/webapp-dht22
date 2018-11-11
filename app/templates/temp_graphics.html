@@ -11,27 +11,21 @@
         <link rel="stylesheet" href="/static/css/skeleton.css">
         <!-- <link rel="icon" type="image/png" href="/static/images/favicon.png"> -->
     </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <form id="datetime_range" action="/temp_graphic" method="POST">
-                    <!-- <div class="row">          -->
-                    <div class="three columns">
+    <body style="background-color:#fff1e7">
+        <div class="container" style="text-align: center;">
+            <div class="row" style="margin-top: 2%;">
+                <form class="two-third column" id="datetime_range" action="/temp_graphic" method="POST">
+                    <div >
                         <label for="from">Desde</label>
-                        <input class="u-full-width" id="datetimepicker1" type="date" value="{{from_date}}" name="from">
+                        <input class="u-middle-width" id="datetimepicker1" type="date" value="{{from_date}}" name="from">
                     </div>
-                    <!-- </div> -->
-                    <!-- <div class="row"> -->
-                    <div class="three columns">
+                    <div>
                         <label for="to">Hasta</label>
-                        <input class="u-full-width" id="datetimepicker2" type="date" value="{{to_date}}" name="to">
+                        <input class="u-middle-width" id="datetimepicker2" type="date" value="{{to_date}}" name="to">
                     </div>
-                    <!-- </div>          -->
-                    <!-- <div class="row"> --> 
-                    <div class="two columns">
+                    <div>
                         <input class="button-primary" type="submit" value="Submit" style="position:relative; top:28px" id="submit_button" />
-                    </div>
-                    <!-- </div> -->
+                    </div> 
                 </form>
             </div>
             <div class="row">
@@ -39,7 +33,10 @@
             </div>
             </br>
             <div class="row">
-                <embed type="image/svg+xml" src={{graph_data}} style='max-width:1000px'/>
+                <embed type="image/svg+xml" src={{graph_data_temp}} style='max-width:1000px'/>
+            </div>
+            <div class="row">
+                <embed type="image/svg+xml" src={{graph_data_hum}} style='max-width:1000px'/>
             </div>
         </div>
     </body>

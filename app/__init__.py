@@ -99,20 +99,34 @@ def create_app(config_name):
         app.logger.debug("Dates -> %s", dates_str)       
         app.logger.debug("Len Dates -> %s", len(dates_str))
 
-        graph = pygal.Line(x_label_rotation=20, x_labels_major_every=len(dates_str)/10, show_minor_x_labels=False)
-        graph.title = 'Graphics of Temperatures and Humidities'
-        graph.x_labels = dates_str
         dates_str_major = []
-        count = 0
+        count = 0        
         while count < len(dates_str):
-            app.logger.debug("Dates_str -> %s", count)
-            dates_str_major.append(dates_str[count])
-            count += len(dates_str)/10
+             app.logger.debug("Dates_str -> %s", count)
+             dates_str_major.append(dates_str[count])
+             count += len(dates_str)/10
+        
+        style_graph_temp = pygal.style.CleanStyle(value_font_size=10)
+        style_graph_hum  = pygal.style.CleanStyle(value_font_size=10)
+        style_graph_temp.background = '#fff1e7'
+        style_graph_hum.background = '#fff1e7'
+        style_graph_temp.colors = ('#91a8d0', '#91a8d0')
+        style_graph_hum.colors = ('#88B04B', '#88B04B')
 
-        graph.x_labels_major = [dates_str_major]
-        graph.add("Temperature", temperatures_str, dots_size=0.09)
-        graph.add("Humidity", humidities_str, dots_size=0.09)
-        graph_data = graph.render_data_uri() 
-        return render_template("temp_graphics.html", graph_data = graph_data, from_date=from_date_str, to_date=to_date_str)
+        graph_temperatures = pygal.Line(x_label_rotation=20, x_labels_major_every=len(dates_str)/10, show_minor_x_labels=False, style=style_graph_temp, show_legend=False)
+        graph_temperatures.title = 'Graphics of Temperatures'
+        graph_temperatures.x_labels = dates_str 
+        graph_temperatures.x_labels_major = [dates_str_major]
+        graph_temperatures.add("Temperature", temperatures_str, dots_size=0.09)
+        graph_data_temp = graph_temperatures.render_data_uri()
+
+        graph_humidities = pygal.Line(x_label_rotation=20, x_labels_major_every=len(dates_str)/10, show_minor_x_labels=False, style=style_graph_hum, show_legend=False)
+        graph_humidities.title = 'Graphics of Humidities'
+        graph_humidities.x_labels = dates_str
+        graph_humidities.x_labels_major = [dates_str_major]
+        graph_humidities.add("Humidity", humidities_str, dots_size=0.09)
+        graph_data_hum = graph_humidities.render_data_uri()
+
+        return render_template("temp_graphics.html", graph_data_temp = graph_data_temp, graph_data_hum = graph_data_hum, from_date=from_date_str, to_date=to_date_str)
 
     return app
