@@ -45,7 +45,7 @@ def create_app(config_name):
         reload(sys)
         sys.setdefaultencoding("utf-8")
         information = Information.query.order_by(Information.id.desc()).first()
-        gauge = pygal.SolidGauge(half_pie=True, inner_radius=0.40,style=pygal.style.styles['default'](value_font_size=10), show_legend=False)
+        gauge = pygal.SolidGauge(half_pie=True, inner_radius=0.40,style=pygal.style.LightColorizedStyle(value_font_size=10), show_legend=False)
         symbol_degree = ("º".encode('utf-8'))
         percent_formatter = lambda x: '{:.10g}%'.format(x)
         celsius_formatter = lambda x: '{:.10g}{simbol}C'.format(x, simbol=symbol_degree)
